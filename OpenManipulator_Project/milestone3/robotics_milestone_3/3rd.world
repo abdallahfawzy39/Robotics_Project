@@ -1,0 +1,994 @@
+<sdf version='1.7'>
+  <world name='default'>
+    <light name='sun' type='directional'>
+      <cast_shadows>1</cast_shadows>
+      <pose>0 0 10 0 -0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <contact>
+              <collide_bitmask>65535</collide_bitmask>
+              <ode/>
+            </contact>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+    </model>
+    <physics type='ode'>
+      <real_time_update_rate>1000</real_time_update_rate>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>150</iters>
+          <precon_iters>0</precon_iters>
+          <sor>1.4</sor>
+          <use_dynamic_moi_rescaling>1</use_dynamic_moi_rescaling>
+        </solver>
+        <constraints>
+          <cfm>1e-05</cfm>
+          <erp>0.2</erp>
+          <contact_max_correcting_vel>2000</contact_max_correcting_vel>
+          <contact_surface_layer>0.01</contact_surface_layer>
+        </constraints>
+      </ode>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>1</shadows>
+    </scene>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>1.20528 -0.121187 0.913765 0 0.748604 2.90278</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <wind/>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>0</latitude_deg>
+      <longitude_deg>0</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <model name='open_manipulator'>
+      <joint name='world_fixed' type='fixed'>
+        <pose relative_to='__model__'>0 0 0 0 -0 0</pose>
+        <parent>world</parent>
+        <child>link1</child>
+      </joint>
+      <link name='link1'>
+        <pose relative_to='world_fixed'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.000309 0 -0.000122 0 -0 0</pose>
+          <mass>0.07912</mass>
+          <inertia>
+            <ixx>1.25052e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>-1.78552e-07</ixz>
+            <iyy>2.18984e-05</iyy>
+            <iyz>0</iyz>
+            <izz>1.92674e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='link1_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link1.stl</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='link1_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link1.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint1' type='revolute'>
+        <pose relative_to='link1'>0.012 0 0.017 0 -0 0</pose>
+        <parent>link1</parent>
+        <child>link2</child>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <lower>-2.82743</lower>
+            <upper>2.82743</upper>
+            <effort>1</effort>
+            <velocity>4.8</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='link2'>
+        <pose relative_to='joint1'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>-0.000302 0.00054 0.047433 0 -0 0</pose>
+          <mass>0.0984068</mass>
+          <inertia>
+            <ixx>3.45434e-05</ixx>
+            <ixy>-1.60311e-08</ixy>
+            <ixz>-3.83752e-07</ixz>
+            <iyy>3.26893e-05</iyy>
+            <iyz>2.85119e-08</iyz>
+            <izz>1.88503e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='link2_collision'>
+          <pose>0 0 0.019 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link2.stl</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='link2_visual'>
+          <pose>0 0 0.019 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link2.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint2' type='revolute'>
+        <pose relative_to='link2'>0 0 0.0595 0 -0 0</pose>
+        <parent>link2</parent>
+        <child>link3</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1.79071</lower>
+            <upper>1.5708</upper>
+            <effort>1</effort>
+            <velocity>4.8</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='link3'>
+        <pose relative_to='joint2'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.010308 0.000377 0.101702 0 -0 0</pose>
+          <mass>0.138509</mass>
+          <inertia>
+            <ixx>0.000330554</ixx>
+            <ixy>-9.7941e-08</ixy>
+            <ixz>-3.85057e-05</ixz>
+            <iyy>0.000342904</iyy>
+            <iyz>-1.57175e-06</iyz>
+            <izz>6.03465e-05</izz>
+          </inertia>
+        </inertial>
+        <collision name='link3_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link3.stl</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='link3_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link3.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint3' type='revolute'>
+        <pose relative_to='link3'>0.024 0 0.128 0 -0 0</pose>
+        <parent>link3</parent>
+        <child>link4</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-0.942478</lower>
+            <upper>1.3823</upper>
+            <effort>1</effort>
+            <velocity>4.8</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='link4'>
+        <pose relative_to='joint3'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.09091 0.000389 0.000224 0 -0 0</pose>
+          <mass>0.132746</mass>
+          <inertia>
+            <ixx>3.06542e-05</ixx>
+            <ixy>-1.27642e-06</ixy>
+            <ixz>-2.68744e-07</ixz>
+            <iyy>0.000242303</iyy>
+            <iyz>1.15595e-08</iyz>
+            <izz>0.000251551</izz>
+          </inertia>
+        </inertial>
+        <collision name='link4_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link4.stl</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='link4_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link4.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='joint4' type='revolute'>
+        <pose relative_to='link4'>0.124 0 0 0 -0 0</pose>
+        <parent>link4</parent>
+        <child>link5</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-1.79071</lower>
+            <upper>2.04204</upper>
+            <effort>1</effort>
+            <velocity>4.8</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='link5'>
+        <pose relative_to='joint4'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0.044774 0 0.008852 0 -0 0</pose>
+          <mass>0.144276</mass>
+          <inertia>
+            <ixx>0.00108095</ixx>
+            <ixy>2.99238e-11</ixy>
+            <ixz>-2.9172e-07</ixz>
+            <iyy>0.0010827</iyy>
+            <iyz>-3.26124e-12</iyz>
+            <izz>0.00109977</izz>
+          </inertia>
+        </inertial>
+        <collision name='link5_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link5.stl</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='link5_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link5.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <visual name='link5_fixed_joint_lump__end_effector_link_visual_1'>
+          <pose>0.126 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.01 0.01 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='gripper' type='prismatic'>
+        <pose relative_to='link5'>0.0817 0.021 0 0 -0 0</pose>
+        <parent>link5</parent>
+        <child>gripper_link</child>
+        <axis>
+          <xyz>0 1 0</xyz>
+          <limit>
+            <lower>-0.01</lower>
+            <upper>0.019</upper>
+            <effort>1</effort>
+            <velocity>4.8</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='gripper_link'>
+        <pose relative_to='gripper'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0.001</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.001</iyy>
+            <iyz>0</iyz>
+            <izz>0.001</izz>
+          </inertia>
+        </inertial>
+        <collision name='gripper_link_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link_grip_l.stl</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='gripper_link_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link_grip_l.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <joint name='gripper_sub' type='prismatic'>
+        <pose relative_to='link5'>0.0817 -0.021 0 0 -0 0</pose>
+        <parent>link5</parent>
+        <child>gripper_link_sub</child>
+        <axis>
+          <xyz>0 -1 0</xyz>
+          <limit>
+            <lower>-0.01</lower>
+            <upper>0.019</upper>
+            <effort>1</effort>
+            <velocity>4.8</velocity>
+          </limit>
+          <dynamics>
+            <spring_reference>0</spring_reference>
+            <spring_stiffness>0</spring_stiffness>
+          </dynamics>
+        </axis>
+      </joint>
+      <link name='gripper_link_sub'>
+        <pose relative_to='gripper_sub'>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>0.001</mass>
+          <inertia>
+            <ixx>0.001</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.001</iyy>
+            <iyz>0</iyz>
+            <izz>0.001</izz>
+          </inertia>
+        </inertial>
+        <collision name='gripper_link_sub_collision'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link_grip_r.stl</uri>
+            </mesh>
+          </geometry>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='gripper_link_sub_visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <mesh>
+              <scale>0.001 0.001 0.001</scale>
+              <uri>/home/dell/catkin_ws/src/open_manipulator/open_manipulator_description/meshes/chain_link_grip_r.stl</uri>
+            </mesh>
+          </geometry>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
+        <controlPeriod>0.001</controlPeriod>
+        <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+        <legacyModeNS>1</legacyModeNS>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <plugin name='gazebo_gripper_ros_control' filename='libroboticsgroup_gazebo_mimic_joint_plugin.so'>
+        <joint>gripper</joint>
+        <mimicJoint>gripper_sub</mimicJoint>
+        <multiplier>1.0</multiplier>
+        <offset>0.0</offset>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <static>0</static>
+      <plugin name='gazebo_gripping_plugin' filename='libgazebo_gripping_plugin.so'>
+        <gripper_link_name>gripper_link</gripper_link_name>
+        <robotNamespace>/</robotNamespace>
+      </plugin>
+      <pose>0 0 0 0 -0 0</pose>
+    </model>
+    <model name='first'>
+      <pose>0 0.04705 0 0 -0 0</pose>
+      <link name='Wall_0'>
+        <collision name='Wall_0_Collision'>
+          <geometry>
+            <box>
+              <size>0.55 0.35 0.05</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.025 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_0_Visual'>
+          <pose>0 0 0.025 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.55 0.35 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>0.4 -0.04705 0 0 -0 0</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='Wall_5'>
+        <collision name='Wall_5_Collision'>
+          <geometry>
+            <box>
+              <size>0.55 0.35 0.05</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.025 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_5_Visual'>
+          <pose>0 0 0.025 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.55 0.35 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-0.4 -0.04705 0 0 -0 3.14159</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='Wall_7'>
+        <collision name='Wall_7_Collision'>
+          <geometry>
+            <box>
+              <size>0.700201 0.35 0.05</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.025 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_7_Visual'>
+          <pose>0 0 0.025 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.700201 0.35 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>-0.012 0.49295 0 0 -0 1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <link name='Wall_9'>
+        <collision name='Wall_9_Collision'>
+          <geometry>
+            <box>
+              <size>0.7 0.35 0.05</size>
+            </box>
+          </geometry>
+          <pose>0 0 0.025 0 -0 0</pose>
+          <max_contacts>10</max_contacts>
+          <surface>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+            <friction>
+              <torsional>
+                <ode/>
+              </torsional>
+              <ode/>
+            </friction>
+          </surface>
+        </collision>
+        <visual name='Wall_9_Visual'>
+          <pose>0 0 0.025 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.7 0.35 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Wood</name>
+            </script>
+            <ambient>1 1 1 1</ambient>
+          </material>
+          <meta>
+            <layer>0</layer>
+          </meta>
+        </visual>
+        <pose>0.024 -0.49305 0 0 -0 -1.5708</pose>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+    </model>
+    <state world_name='default'>
+      <sim_time>20 779000000</sim_time>
+      <real_time>23 606070488</real_time>
+      <wall_time>1683842114 957210988</wall_time>
+      <iterations>20779</iterations>
+      <model name='3rd'>
+        <pose>0.301378 -1e-06 0.074273 3.9e-05 -7e-06 2.9e-05</pose>
+        <scale>1 1 1</scale>
+        <link name='link_0'>
+          <pose>0.301378 -1e-06 0.074273 3.9e-05 -7e-06 2.9e-05</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='first'>
+        <pose>0 0.04705 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='Wall_0'>
+          <pose>0.4 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='Wall_5'>
+          <pose>-0.4 0 0 0 -0 3.14159</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='Wall_7'>
+          <pose>-0.012 0.54 0 0 -0 1.5708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+        <link name='Wall_9'>
+          <pose>0.024 -0.446 0 0 0 -1.5708</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ground_plane'>
+        <pose>0 0 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>0 0 0 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='open_manipulator'>
+        <pose>-0 0 1e-06 1e-05 -3.2e-05 -1e-06</pose>
+        <scale>1 1 1</scale>
+        <link name='gripper_link'>
+          <pose>0.241741 0.019005 0.204458 -1e-06 0.000178 0.000106</pose>
+          <velocity>0.003072 0.071686 -0.005859 0.000183 0.026218 0.002171</velocity>
+          <acceleration>-0.118068 0.209066 0.028242 0.369821 -0.078739 -2.04117</acceleration>
+          <wrench>-0.000118 0.000209 2.8e-05 0 -0 0</wrench>
+        </link>
+        <link name='gripper_link_sub'>
+          <pose>0.241745 -0.022245 0.204458 -1e-06 0.000178 0.000106</pose>
+          <velocity>0.003169 0.00092 -0.005867 0.000208 0.026217 0.002188</velocity>
+          <acceleration>0.071954 0.127063 0.011992 0.419181 -0.080237 -2.00789</acceleration>
+          <wrench>7.2e-05 0.000127 1.2e-05 0 -0 0</wrench>
+        </link>
+        <link name='link1'>
+          <pose>-0 0 1e-06 1e-05 -3.2e-05 -1e-06</pose>
+          <velocity>0 -2e-06 -1e-06 0.023825 -0.001005 -5.3e-05</velocity>
+          <acceleration>0.000353 0.001214 -0.001615 0.525687 -1.13074 3.03645</acceleration>
+          <wrench>2.8e-05 9.6e-05 -0.000128 0 -0 0</wrench>
+        </link>
+        <link name='link2'>
+          <pose>0.012009 0 0.017001 2e-06 0.000152 0.000106</pose>
+          <velocity>1.3e-05 2.6e-05 5e-06 0.0068 -0.000402 0.001016</velocity>
+          <acceleration>-0.012943 -0.593618 0.017329 1.0366 -0.804396 1.93553</acceleration>
+          <wrench>-0.001274 -0.058416 0.001705 0 -0 0</wrench>
+        </link>
+        <link name='link3'>
+          <pose>0.01202 -0 0.0765 0 0.000177 0.000106</pose>
+          <velocity>-6e-06 -0.000304 4e-06 0.00168 0.02442 0.002175</velocity>
+          <acceleration>-0.023684 -0.906866 0.010913 -2.91838 -0.107254 -2.03109</acceleration>
+          <wrench>-0.00328 -0.125609 0.001512 0 -0 0</wrench>
+        </link>
+        <link name='link4'>
+          <pose>0.036042 3e-06 0.204495 0 0.000177 0.000106</pose>
+          <velocity>0.003121 -0.000457 -0.000585 0.002211 0.025281 0.002314</velocity>
+          <acceleration>-0.025655 -0.506108 0.014887 -1.86261 -0.081045 -1.75529</acceleration>
+          <wrench>-0.003406 -0.067184 0.001976 0 -0 0</wrench>
+        </link>
+        <link name='link5'>
+          <pose>0.160043 1.6e-05 0.204473 -1e-06 0.000178 0.000106</pose>
+          <velocity>0.00312 -0.000167 -0.00372 0.000244 0.026216 0.002212</velocity>
+          <acceleration>-0.023989 -0.159949 0.018648 0.492432 -0.08241 -1.9584</acceleration>
+          <wrench>-0.003461 -0.023077 0.00269 0 -0 0</wrench>
+        </link>
+      </model>
+      <light name='sun'>
+        <pose>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <model name='3rd'>
+      <link name='link_0'>
+        <inertial>
+          <mass>0.3</mass>
+          <inertia>
+            <ixx>9.313e-05</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>9.313e-05</iyy>
+            <iyz>0</iyz>
+            <izz>6.125e-05</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <pose>0 0 0 0 -0 0</pose>
+        <gravity>1</gravity>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <enable_wind>0</enable_wind>
+        <visual name='visual'>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.05</size>
+            </box>
+          </geometry>
+          <material>
+            <lighting>1</lighting>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+            <shader type='pixel'>
+              <normal_map>__default__</normal_map>
+            </shader>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name='collision'>
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <pose>0 0 0 0 -0 0</pose>
+          <geometry>
+            <box>
+              <size>0.035 0.035 0.05</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+      </link>
+      <static>0</static>
+      <allow_auto_disable>1</allow_auto_disable>
+      <pose>0.301378 -1e-06 0.074273 3.9e-05 -7e-06 2.9e-05</pose>
+    </model>
+  </world>
+</sdf>
